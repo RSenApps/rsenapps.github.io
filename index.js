@@ -12143,9 +12143,20 @@ Polymer('x-page-3');;
 	var pages = document.querySelector('core-animated-pages');
 	var ripple = document.getElementById('ripple');
 	var header = document.getElementById('header');
-	tabs.addEventListener('click',function(){
+	var loaded = false;
+	tabs.addEventListener('core-select',function(){
 	  pages.selected = tabs.selected;
+	  	var offset = getOffset(projectTab);
+		if (!loaded)
+		{
+			setTimeout( function () {
+			ripple.downAction({x: offset.left + projectTab.offsetWidth/2, y: offset.top});
+			}, 600 );
+			
+			loaded=true;
+		}
 	});
+	
 	hackathonTab.addEventListener('click', function() {
 	ripple.upAction();
 	var offset = getOffset(hackathonTab);
