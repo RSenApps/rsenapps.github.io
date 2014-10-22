@@ -84,83 +84,7 @@
 			</core-animated-pages>
 		</div>
 	</core-scroll-header-panel>
-	<script>
-	var tabs = document.querySelector('paper-tabs');
-	var projectTab = document.getElementById('projectTab');
-	var hackathonTab = document.getElementById('hackathonTab');
-	var workTab = document.getElementById('workTab');
-	var pages = document.querySelector('core-animated-pages');
-	var ripple = document.getElementById('ripple');
-	var header = document.getElementById('header');
-	tabs.addEventListener('core-select',function(){
-	  pages.selected = tabs.selected;
-	});
-	hackathonTab.addEventListener('click', function() {
-	ripple.upAction();
-	var offset = getOffset(hackathonTab);
 	
-		ripple.downAction({x: offset.left + hackathonTab.offsetWidth/2, y: offset.top}); //hackathonTab.offset().left + hackathonTab.width/2);
-		
-		var animation = new CoreAnimation();
-		animation.duration = 500;
-		animation.fill="forwards";
-		animation.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#795548'}];
-		animation.target=header;
-		animation.play();
-	var animation2 = new CoreAnimation();
-		animation2.duration = 500;
-		animation2.fill="forwards";
-		animation2.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#795548'}];
-		animation2.target=tabs;
-		animation2.play();
-	});
-	projectTab.addEventListener('click', function() {
-	var offset = getOffset(projectTab);
-	ripple.upAction();
-		ripple.downAction({x: offset.left + projectTab.offsetWidth/2, y: offset.top}); //hackathonTab.offset().left + hackathonTab.width/2);
-		
-		var animation = new CoreAnimation();
-		animation.duration = 500;
-		animation.fill="forwards";
-		animation.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#3f51b5'}];
-		animation.target=header;
-		animation.play();
-	var animation2 = new CoreAnimation();
-		animation2.duration = 500;
-		animation2.fill="forwards";
-		animation2.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#3f51b5'}];
-		animation2.target=tabs;
-		animation2.play();
-	});
-	workTab.addEventListener('click', function() {
-	ripple.upAction();
-	var offset = getOffset(workTab);
-		ripple.downAction({x: offset.left + workTab.offsetWidth/2, y: offset.top}); //hackathonTab.offset().left + hackathonTab.width/2);
-		
-		var animation = new CoreAnimation();
-		animation.duration = 500;
-		animation.fill="forwards";
-		animation.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#607d8b'}];
-		animation.target=header;
-		animation.play();
-	var animation2 = new CoreAnimation();
-		animation2.duration = 500;
-		animation2.fill="forwards";
-		animation2.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#607d8b'}];
-		animation2.target=tabs;
-		animation2.play();
-	});
-	function getOffset( el ) {
-    var _x = 0;
-    var _y = 0;
-    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-        _x += el.offsetLeft - el.scrollLeft;
-        _y += el.offsetTop - el.scrollTop;
-        el = el.offsetParent;
-    }
-    return { top: _y, left: _x };
-}
-	</script>
 	<polymer-element name="x-page-1" noscript>
 			<template>
 			<link rel="stylesheet" type="text/css" href="style.css" />
@@ -305,6 +229,8 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 									
 								</div>
 							</div>
+						</div>
+					</div>
 				</div>
 			</template>
 		</polymer-element>
@@ -395,5 +321,82 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 				</div>
 			</template>
 		</polymer-element>
+		<script>
+	var tabs = document.querySelector('paper-tabs');
+	var projectTab = document.getElementById('projectTab');
+	var hackathonTab = document.getElementById('hackathonTab');
+	var workTab = document.getElementById('workTab');
+	var pages = document.querySelector('core-animated-pages');
+	var ripple = document.getElementById('ripple');
+	var header = document.getElementById('header');
+	tabs.addEventListener('click',function(){
+	  pages.selected = tabs.selected;
+	});
+	hackathonTab.addEventListener('click', function() {
+	ripple.upAction();
+	var offset = getOffset(hackathonTab);
+	
+		ripple.downAction({x: offset.left + hackathonTab.offsetWidth/2, y: offset.top}); //hackathonTab.offset().left + hackathonTab.width/2);
+		
+		var animation = new CoreAnimation();
+		animation.duration = 500;
+		animation.fill="forwards";
+		animation.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#795548'}];
+		animation.target=header;
+		animation.play();
+	var animation2 = new CoreAnimation();
+		animation2.duration = 500;
+		animation2.fill="forwards";
+		animation2.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#795548'}];
+		animation2.target=tabs;
+		animation2.play();
+	});
+	projectTab.addEventListener('click', function() {
+	var offset = getOffset(projectTab);
+	ripple.upAction();
+		ripple.downAction({x: offset.left + projectTab.offsetWidth/2, y: offset.top}); //hackathonTab.offset().left + hackathonTab.width/2);
+		
+		var animation = new CoreAnimation();
+		animation.duration = 500;
+		animation.fill="forwards";
+		animation.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#3f51b5'}];
+		animation.target=header;
+		animation.play();
+	var animation2 = new CoreAnimation();
+		animation2.duration = 500;
+		animation2.fill="forwards";
+		animation2.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#3f51b5'}];
+		animation2.target=tabs;
+		animation2.play();
+	});
+	workTab.addEventListener('click', function() {
+	ripple.upAction();
+	var offset = getOffset(workTab);
+		ripple.downAction({x: offset.left + workTab.offsetWidth/2, y: offset.top}); //hackathonTab.offset().left + hackathonTab.width/2);
+		
+		var animation = new CoreAnimation();
+		animation.duration = 500;
+		animation.fill="forwards";
+		animation.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#607d8b'}];
+		animation.target=header;
+		animation.play();
+	var animation2 = new CoreAnimation();
+		animation2.duration = 500;
+		animation2.fill="forwards";
+		animation2.keyframes = [{"backgroundColor": header.backgroundColor}, {"backgroundColor": '#607d8b'}];
+		animation2.target=tabs;
+		animation2.play();
+	});
+	function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: _y, left: _x };
+}
+	</script>
 </body>
 </html>
