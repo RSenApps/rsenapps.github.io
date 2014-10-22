@@ -322,6 +322,17 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 			</template>
 		</polymer-element>
 		<script>
+		 (function(f) {
+        window.setTimeout = f(window.setTimeout);   // overwrites the global function!
+        window.setInterval = f(window.setInterval); // overwrites the global function!
+    })(function(f) {
+        return function(c, t) {
+            var a = [].slice.call(arguments, 2);    // gathers the extra args
+            return f(function() {
+                c.apply(this, a);                   // passes them to your function
+            }, t);
+        };
+    });
 	var tabs = document.querySelector('paper-tabs');
 	var projectTab = document.getElementById('projectTab');
 	var hackathonTab = document.getElementById('hackathonTab');
