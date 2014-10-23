@@ -152,10 +152,10 @@ core-scroll-header-panel
     height: 100%;
 }
 div.leftColumn {
-float:left; width:50%; padding-bottom:100px
+float:left; width:50%; padding-bottom:50px
 }
 div.rightColumn {
-	float:right; width:50%; padding-bottom:100px
+	float:right; width:50%; padding-bottom:50px
 }
 img.cardContentImage {
 	width:100%
