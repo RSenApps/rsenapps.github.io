@@ -150,16 +150,8 @@
     return value;
   }
 
-  function isNotAnimatable(property) {
-    // https://w3c.github.io/web-animations/#concept-not-animatable
-    return property === 'display' || property.lastIndexOf('animation', 0) === 0 || property.lastIndexOf('transition', 0) === 0;
-  }
-
   // This delegates parsing shorthand value syntax to the browser.
   function expandShorthandAndAntiAlias(property, value, result) {
-    if (isNotAnimatable(property)) {
-      return;
-    }
     var longProperties = shorthandToLonghand[property];
     if (longProperties) {
       shorthandExpanderElem.style[property] = value;
@@ -173,65 +165,14 @@
     }
   };
 
-  function convertToArrayForm(effectInput) {
-    var normalizedEffectInput = [];
-
-    for (var property in effectInput) {
-      if (property in ['easing', 'offset', 'composite']) {
-        continue;
-      }
-
-      var values = effectInput[property];
-      if (!Array.isArray(values)) {
-        values = [values];
-      }
-
-      var keyframe;
-      var numKeyframes = values.length;
-      for (var i = 0; i < numKeyframes; i++) {
-        keyframe = {};
-
-        if ('offset' in effectInput) {
-          keyframe.offset = effectInput.offset;
-        } else if (numKeyframes == 1) {
-          keyframe.offset = 1.0;
-        } else {
-          keyframe.offset = i / (numKeyframes - 1.0);
-        }
-
-        if ('easing' in effectInput) {
-          keyframe.easing = effectInput.easing;
-        }
-
-        if ('composite' in effectInput) {
-          keyframe.composite = effectInput.composite;
-        }
-
-        keyframe[property] = values[i];
-
-        normalizedEffectInput.push(keyframe);
-      }
-    }
-
-    normalizedEffectInput.sort(function(a, b) { return a.offset - b.offset; });
-    return normalizedEffectInput;
-  };
-
   function normalizeKeyframes(effectInput) {
-    if (effectInput == null) {
+    if (!Array.isArray(effectInput) && effectInput !== null)
+      throw new TypeError('Keyframe effect must be null or an array of keyframes');
+
+    if (effectInput == null)
       return [];
-    }
 
-    if (window.Symbol && Symbol.iterator && Array.prototype.from && effectInput[Symbol.iterator]) {
-      // Handle custom iterables in most browsers by converting to an array
-      effectInput = Array.from(effectInput);
-    }
-
-    if (!Array.isArray(effectInput)) {
-      effectInput = convertToArrayForm(effectInput);
-    }
-
-    var keyframes = effectInput.map(function(originalKeyframe) {
+    var keyframeEffect = effectInput.map(function(originalKeyframe) {
       var keyframe = {};
       for (var member in originalKeyframe) {
         var memberValue = originalKeyframe[member];
@@ -239,22 +180,16 @@
           if (memberValue != null) {
             memberValue = Number(memberValue);
             if (!isFinite(memberValue))
-              throw new TypeError('Keyframe offsets must be numbers.');
-            if (memberValue < 0 || memberValue > 1)
-              throw new TypeError('Keyframe offsets must be between 0 and 1.');
+              throw new TypeError('keyframe offsets must be numbers.');
           }
         } else if (member == 'composite') {
-          if (memberValue == 'add' || memberValue == 'accumulate') {
-            throw {
-              type: DOMException.NOT_SUPPORTED_ERR,
-              name: 'NotSupportedError',
-              message: 'add compositing is not supported'
-            };
-          } else if (memberValue != 'replace') {
-            throw new TypeError('Invalid composite mode ' + memberValue + '.');
-          }
+          throw {
+            type: DOMException.NOT_SUPPORTED_ERR,
+            name: 'NotSupportedError',
+            message: 'add compositing is not supported'
+          };
         } else if (member == 'easing') {
-          memberValue = shared.normalizeEasing(memberValue);
+          memberValue = shared.toTimingFunction(memberValue);
         } else {
           memberValue = '' + memberValue;
         }
@@ -263,18 +198,22 @@
       if (keyframe.offset == undefined)
         keyframe.offset = null;
       if (keyframe.easing == undefined)
-        keyframe.easing = 'linear';
+        keyframe.easing = shared.toTimingFunction('linear');
       return keyframe;
     });
 
     var everyFrameHasOffset = true;
     var looselySortedByOffset = true;
     var previousOffset = -Infinity;
-    for (var i = 0; i < keyframes.length; i++) {
-      var offset = keyframes[i].offset;
+    for (var i = 0; i < keyframeEffect.length; i++) {
+      var offset = keyframeEffect[i].offset;
       if (offset != null) {
         if (offset < previousOffset) {
-          throw new TypeError('Keyframes are not loosely sorted by offset. Sort or specify offsets.');
+          throw {
+            code: DOMException.INVALID_MODIFICATION_ERR,
+            name: 'InvalidModificationError',
+            message: 'Keyframes are not loosely sorted by offset. Sort or specify offsets.'
+          };
         }
         previousOffset = offset;
       } else {
@@ -282,24 +221,24 @@
       }
     }
 
-    keyframes = keyframes.filter(function(keyframe) {
+    keyframeEffect = keyframeEffect.filter(function(keyframe) {
       return keyframe.offset >= 0 && keyframe.offset <= 1;
     });
 
     function spaceKeyframes() {
-      var length = keyframes.length;
-      if (keyframes[length - 1].offset == null)
-        keyframes[length - 1].offset = 1;
-      if (length > 1 && keyframes[0].offset == null)
-        keyframes[0].offset = 0;
+      var length = keyframeEffect.length;
+      if (keyframeEffect[length - 1].offset == null)
+        keyframeEffect[length - 1].offset = 1;
+      if (length > 1 && keyframeEffect[0].offset == null)
+        keyframeEffect[0].offset = 0;
 
       var previousIndex = 0;
-      var previousOffset = keyframes[0].offset;
+      var previousOffset = keyframeEffect[0].offset;
       for (var i = 1; i < length; i++) {
-        var offset = keyframes[i].offset;
+        var offset = keyframeEffect[i].offset;
         if (offset != null) {
           for (var j = 1; j < i - previousIndex; j++)
-            keyframes[previousIndex + j].offset = previousOffset + (offset - previousOffset) * j / (i - previousIndex);
+            keyframeEffect[previousIndex + j].offset = previousOffset + (offset - previousOffset) * j / (i - previousIndex);
           previousIndex = i;
           previousOffset = offset;
         }
@@ -308,10 +247,9 @@
     if (!everyFrameHasOffset)
       spaceKeyframes();
 
-    return keyframes;
+    return keyframeEffect;
   }
 
-  shared.convertToArrayForm = convertToArrayForm;
   shared.normalizeKeyframes = normalizeKeyframes;
 
   if (WEB_ANIMATIONS_TESTING) {

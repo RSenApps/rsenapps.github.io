@@ -17,10 +17,6 @@
   var silenced = {};
 
   shared.isDeprecated = function(feature, date, advice, plural) {
-    if (WEB_ANIMATIONS_TESTING) {
-      return true;
-    }
-
     var auxVerb = plural ? 'are' : 'is';
     var today = new Date();
     var expiry = new Date(date);
@@ -38,7 +34,6 @@
   };
 
   shared.deprecated = function(feature, date, advice, plural) {
-    var auxVerb = plural ? 'are' : 'is';
     if (shared.isDeprecated(feature, date, advice, plural)) {
       throw new Error(feature + ' ' + auxVerb + ' no longer supported. ' + advice);
     }

@@ -16,41 +16,30 @@
   var nullTarget = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
 
   var sequenceNumber = 0;
-  scope.bindAnimationForCustomEffect = function(animation) {
-    var target = animation.effect.target;
-    var effectFunction;
-    var isKeyframeEffect = typeof animation.effect.getFrames() == 'function';
-    if (isKeyframeEffect) {
-      effectFunction = animation.effect.getFrames();
-    } else {
-      effectFunction = animation.effect._onsample;
-    }
-    var timing = animation.effect.timing;
-    var last = null;
+  scope.bindPlayerForCustomEffect = function(player) {
+    var target = player.source.target;
+    var effect = player.source.effect;
+    var timing = player.source.timing;
+    var last = undefined;
     timing = shared.normalizeTimingInput(timing);
     var callback = function() {
-      var t = callback._animation ? callback._animation.currentTime : null;
+      var t = callback._player ? callback._player.currentTime : null;
       if (t !== null) {
-        t = shared.calculateIterationProgress(shared.calculateActiveDuration(timing), t, timing);
+        t = shared.calculateTimeFraction(shared.calculateActiveDuration(timing), t, timing);
         if (isNaN(t))
           t = null;
       }
-      // FIXME: There are actually more conditions under which the effectFunction
+      // FIXME: There are actually more conditions under which the effect
       // should be called.
-      if (t !== last) {
-        if (isKeyframeEffect) {
-          effectFunction(t, target, animation.effect);
-        } else {
-          effectFunction(t, animation.effect, animation.effect._animation);
-        }
-      }
+      if (t !== last)
+        effect(t, target, player.source);
       last = t;
     };
 
-    callback._animation = animation;
+    callback._player = player;
     callback._registered = false;
     callback._sequenceNumber = sequenceNumber++;
-    animation._callback = callback;
+    player._callback = callback;
     register(callback);
   };
 
@@ -75,7 +64,7 @@
     });
     updating = updating.filter(function(callback) {
       callback();
-      var playState = callback._animation ? callback._animation.playState : 'idle';
+      var playState = callback._player ? callback._player.playState : 'idle';
       if (playState != 'running' && playState != 'pending')
         callback._registered = false;
       return callback._registered;
@@ -90,7 +79,7 @@
     }
   }
 
-  scope.Animation.prototype._register = function() {
+  scope.Player.prototype._register = function() {
     if (this._callback)
       register(this._callback);
   };

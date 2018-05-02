@@ -16,117 +16,19 @@
 
   var fills = 'backwards|forwards|both|none'.split('|');
   var directions = 'reverse|alternate|alternate-reverse'.split('|');
-  var linear = function(x) { return x; };
 
-  function cloneTimingInput(timingInput) {
-    if (typeof timingInput == 'number') {
-      return timingInput;
-    }
-    var clone = {};
-    for (var m in timingInput) {
-      clone[m] = timingInput[m];
-    }
-    return clone;
-  }
-
-  function AnimationEffectTiming() {
-    this._delay = 0;
-    this._endDelay = 0;
-    this._fill = 'none';
-    this._iterationStart = 0;
-    this._iterations = 1;
-    this._duration = 0;
-    this._playbackRate = 1;
-    this._direction = 'normal';
-    this._easing = 'linear';
-    this._easingFunction = linear;
-  }
-
-  function isInvalidTimingDeprecated() {
-    return shared.isDeprecated('Invalid timing inputs', '2016-03-02', 'TypeError exceptions will be thrown instead.', true);
-  }
-
-  AnimationEffectTiming.prototype = {
-    _setMember: function(member, value) {
-      this['_' + member] = value;
-      if (this._effect) {
-        this._effect._timingInput[member] = value;
-        this._effect._timing = shared.normalizeTimingInput(this._effect._timingInput);
-        this._effect.activeDuration = shared.calculateActiveDuration(this._effect._timing);
-        if (this._effect._animation) {
-          this._effect._animation._rebuildUnderlyingAnimation();
-        }
-      }
-    },
-    get playbackRate() {
-      return this._playbackRate;
-    },
-    set delay(value) {
-      this._setMember('delay', value);
-    },
-    get delay() {
-      return this._delay;
-    },
-    set endDelay(value) {
-      this._setMember('endDelay', value);
-    },
-    get endDelay() {
-      return this._endDelay;
-    },
-    set fill(value) {
-      this._setMember('fill', value);
-    },
-    get fill() {
-      return this._fill;
-    },
-    set iterationStart(value) {
-      if ((isNaN(value) || value < 0) && isInvalidTimingDeprecated()) {
-        throw new TypeError('iterationStart must be a non-negative number, received: ' + timing.iterationStart);
-      }
-      this._setMember('iterationStart', value);
-    },
-    get iterationStart() {
-      return this._iterationStart;
-    },
-    set duration(value) {
-      if (value != 'auto' && (isNaN(value) || value < 0) && isInvalidTimingDeprecated()) {
-        throw new TypeError('duration must be non-negative or auto, received: ' + value);
-      }
-      this._setMember('duration', value);
-    },
-    get duration() {
-      return this._duration;
-    },
-    set direction(value) {
-      this._setMember('direction', value);
-    },
-    get direction() {
-      return this._direction;
-    },
-    set easing(value) {
-      this._easingFunction = parseEasingFunction(normalizeEasing(value));
-      this._setMember('easing', value);
-    },
-    get easing() {
-      return this._easing;
-    },
-    set iterations(value) {
-      if ((isNaN(value) || value < 0) && isInvalidTimingDeprecated()) {
-        throw new TypeError('iterations must be non-negative, received: ' + value);
-      }
-      this._setMember('iterations', value);
-    },
-    get iterations() {
-      return this._iterations;
-    }
-  };
-
-  function makeTiming(timingInput, forGroup, effect) {
-    var timing = new AnimationEffectTiming();
-    if (forGroup) {
-      timing.fill = 'both';
-      timing.duration = 'auto';
-    }
+  function makeTiming(timingInput, forGroup) {
+    var timing = {
+      delay: 0,
+      endDelay: 0,
+      fill: forGroup ? 'both' : 'none',
+      iterationStart: 0,
+      iterations: 1,
+      duration: forGroup ? 'auto' : 0,
+      playbackRate: 1,
+      direction: 'normal',
+      easing: 'linear',
+    };
     if (typeof timingInput == 'number' && !isNaN(timingInput)) {
       timing.duration = timingInput;
     } else if (timingInput !== undefined) {
@@ -143,7 +45,7 @@
           if ((property == 'direction') && (directions.indexOf(timingInput[property]) == -1)) {
             return;
           }
-          if (property == 'playbackRate' && timingInput[property] !== 1 && shared.isDeprecated('AnimationEffectTiming.playbackRate', '2014-11-28', 'Use Animation.playbackRate instead.')) {
+          if (property == 'playbackRate' && timingInput[property] !== 1 && shared.isDeprecated('AnimationTiming.playbackRate', '2014-11-28', 'Use AnimationPlayer.playbackRate instead.')) {
             return;
           }
           timing[property] = timingInput[property];
@@ -153,20 +55,10 @@
     return timing;
   }
 
-  function numericTimingToObject(timingInput) {
-    if (typeof timingInput == 'number') {
-      if (isNaN(timingInput)) {
-        timingInput = { duration: 0 };
-      } else {
-        timingInput = { duration: timingInput };
-      }
-    }
-    return timingInput;
-  }
-
   function normalizeTimingInput(timingInput, forGroup) {
-    timingInput = shared.numericTimingToObject(timingInput);
-    return makeTiming(timingInput, forGroup);
+    var timing = makeTiming(timingInput, forGroup);
+    timing.easing = toTimingFunction(timing.easing);
+    return timing;
   }
 
   function cubic(a, b, c, d) {
@@ -174,29 +66,12 @@
       return linear;
     }
     return function(x) {
-      if (x <= 0) {
-        var start_gradient = 0;
-        if (a > 0)
-          start_gradient = b / a;
-        else if (!b && c > 0)
-          start_gradient = d / c;
-        return start_gradient * x;
-      }
-      if (x >= 1) {
-        var end_gradient = 0;
-        if (c < 1)
-          end_gradient = (d - 1) / (c - 1);
-        else if (c == 1 && a < 1)
-          end_gradient = (b - 1) / (a - 1);
-        return 1 + end_gradient * (x - 1);
-      }
-
       var start = 0, end = 1;
-      while (start < end) {
+      while (1) {
         var mid = (start + end) / 2;
         function f(a, b, m) { return 3 * a * (1 - m) * (1 - m) * m + 3 * b * (1 - m) * m * m + m * m * m};
         var xEst = f(a, c, mid);
-        if (Math.abs(x - xEst) < 0.00001) {
+        if (Math.abs(x - xEst) < 0.001) {
           return f(b, d, mid);
         }
         if (xEst < x) {
@@ -205,7 +80,6 @@
           end = mid;
         }
       }
-      return f(b, d, mid);
     }
   }
 
@@ -234,54 +108,32 @@
     'step-end': step(1, End)
   };
 
-  var styleForCleaning = null;
   var numberString = '\\s*(-?\\d+\\.?\\d*|-?\\.\\d+)\\s*';
   var cubicBezierRe = new RegExp('cubic-bezier\\(' + numberString + ',' + numberString + ',' + numberString + ',' + numberString + '\\)');
   var stepRe = /steps\(\s*(\d+)\s*,\s*(start|middle|end)\s*\)/;
+  var linear = function(x) { return x; };
 
-  function normalizeEasing(easing) {
-    if (!styleForCleaning) {
-      styleForCleaning = document.createElement('div').style;
-    }
-    styleForCleaning.animationTimingFunction = '';
-    styleForCleaning.animationTimingFunction = easing;
-    var normalizedEasing = styleForCleaning.animationTimingFunction;
-    if (normalizedEasing == '' && isInvalidTimingDeprecated()) {
-      throw new TypeError(easing + ' is not a valid value for easing');
-    }
-    return normalizedEasing;
-  }
-
-  function parseEasingFunction(normalizedEasing) {
-    if (normalizedEasing == 'linear') {
-      return linear;
-    }
-    var cubicData = cubicBezierRe.exec(normalizedEasing);
+  function toTimingFunction(easing) {
+    var cubicData = cubicBezierRe.exec(easing);
     if (cubicData) {
       return cubic.apply(this, cubicData.slice(1).map(Number));
     }
-    var stepData = stepRe.exec(normalizedEasing);
+    var stepData = stepRe.exec(easing);
     if (stepData) {
       return step(Number(stepData[1]), {'start': Start, 'middle': Middle, 'end': End}[stepData[2]]);
     }
-    var preset = presets[normalizedEasing];
+    var preset = presets[easing];
     if (preset) {
       return preset;
     }
-    // At this point none of our parse attempts succeeded; the easing is invalid.
-    // Fall back to linear in the interest of not crashing the page.
     return linear;
-  }
+  };
 
   function calculateActiveDuration(timing) {
     return Math.abs(repeatedDuration(timing) / timing.playbackRate);
   }
 
   function repeatedDuration(timing) {
-    // https://w3c.github.io/web-animations/#calculating-the-active-duration
-    if (timing.duration === 0 || timing.iterations === 0) {
-      return 0;
-    }
     return timing.duration * timing.iterations;
   }
 
@@ -291,24 +143,19 @@
   var PhaseActive = 3;
 
   function calculatePhase(activeDuration, localTime, timing) {
-    // https://w3c.github.io/web-animations/#animation-effect-phases-and-states
     if (localTime == null) {
       return PhaseNone;
     }
-
-    var endTime = timing.delay + activeDuration + timing.endDelay;
-    if (localTime < Math.min(timing.delay, endTime)) {
+    if (localTime < timing.delay) {
       return PhaseBefore;
     }
-    if (localTime >= Math.min(timing.delay + activeDuration, endTime)) {
+    if (localTime >= timing.delay + activeDuration) {
       return PhaseAfter;
     }
-
     return PhaseActive;
   }
 
   function calculateActiveTime(activeDuration, fillMode, localTime, phase, delay) {
-    // https://w3c.github.io/web-animations/#calculating-the-active-time
     switch (phase) {
       case PhaseBefore:
         if (fillMode == 'backwards' || fillMode == 'both')
@@ -325,96 +172,71 @@
     }
   }
 
-  function calculateOverallProgress(iterationDuration, phase, iterations, activeTime, iterationStart) {
-    // https://w3c.github.io/web-animations/#calculating-the-overall-progress
-    var overallProgress = iterationStart;
-    if (iterationDuration === 0) {
-      if (phase !== PhaseBefore) {
-        overallProgress += iterations;
-      }
-    } else {
-      overallProgress += activeTime / iterationDuration;
-    }
-    return overallProgress;
+  function calculateScaledActiveTime(activeDuration, activeTime, startOffset, timing) {
+    return (timing.playbackRate < 0 ? activeTime - activeDuration : activeTime) * timing.playbackRate + startOffset;
   }
 
-  function calculateSimpleIterationProgress(overallProgress, iterationStart, phase, iterations, activeTime, iterationDuration) {
-    // https://w3c.github.io/web-animations/#calculating-the-simple-iteration-progress
-
-    var simpleIterationProgress = (overallProgress === Infinity) ? iterationStart % 1 : overallProgress % 1;
-    if (simpleIterationProgress === 0 && phase === PhaseAfter && iterations !== 0 &&
-        (activeTime !== 0 || iterationDuration === 0)) {
-      simpleIterationProgress = 1;
+  function calculateIterationTime(iterationDuration, repeatedDuration, scaledActiveTime, startOffset, timing) {
+    if (scaledActiveTime === Infinity || scaledActiveTime === -Infinity || (scaledActiveTime - startOffset == repeatedDuration && timing.iterations && ((timing.iterations + timing.iterationStart) % 1 == 0))) {
+      return iterationDuration;
     }
-    return simpleIterationProgress;
+
+    return scaledActiveTime % iterationDuration;
   }
 
-  function calculateCurrentIteration(phase, iterations, simpleIterationProgress, overallProgress) {
-    // https://w3c.github.io/web-animations/#calculating-the-current-iteration
-    if (phase === PhaseAfter && iterations === Infinity) {
-      return Infinity;
+  function calculateCurrentIteration(iterationDuration, iterationTime, scaledActiveTime, timing) {
+    if (scaledActiveTime === 0) {
+      return 0;
     }
-    if (simpleIterationProgress === 1) {
-      return Math.floor(overallProgress) - 1;
+    if (iterationTime == iterationDuration) {
+      return timing.iterationStart + timing.iterations - 1;
     }
-    return Math.floor(overallProgress);
+    return Math.floor(scaledActiveTime / iterationDuration);
   }
 
-  function calculateDirectedProgress(playbackDirection, currentIteration, simpleIterationProgress) {
-    // https://w3c.github.io/web-animations/#calculating-the-directed-progress
-    var currentDirection = playbackDirection;
-    if (playbackDirection !== 'normal' && playbackDirection !== 'reverse') {
-      var d = currentIteration;
-      if (playbackDirection === 'alternate-reverse') {
-        d += 1;
-      }
-      currentDirection = 'normal';
-      if (d !== Infinity && d % 2 !== 0) {
-        currentDirection = 'reverse';
-      }
-    }
-    if (currentDirection === 'normal') {
-      return simpleIterationProgress;
-    }
-    return 1 - simpleIterationProgress;
+  function calculateTransformedTime(currentIteration, iterationDuration, iterationTime, timing) {
+    var currentIterationIsOdd = currentIteration % 2 >= 1;
+    var currentDirectionIsForwards = timing.direction == 'normal' || timing.direction == (currentIterationIsOdd ? 'alternate-reverse' : 'alternate');
+    var directedTime = currentDirectionIsForwards ? iterationTime : iterationDuration - iterationTime;
+    var timeFraction = directedTime / iterationDuration;
+    return iterationDuration * timing.easing(timeFraction);
   }
 
-  function calculateIterationProgress(activeDuration, localTime, timing) {
+  function calculateTimeFraction(activeDuration, localTime, timing) {
     var phase = calculatePhase(activeDuration, localTime, timing);
     var activeTime = calculateActiveTime(activeDuration, timing.fill, localTime, phase, timing.delay);
     if (activeTime === null)
       return null;
-
-    var overallProgress = calculateOverallProgress(timing.duration, phase, timing.iterations, activeTime, timing.iterationStart);
-    var simpleIterationProgress = calculateSimpleIterationProgress(overallProgress, timing.iterationStart, phase, timing.iterations, activeTime, timing.duration);
-    var currentIteration = calculateCurrentIteration(phase, timing.iterations, simpleIterationProgress, overallProgress);
-    var directedProgress = calculateDirectedProgress(timing.direction, currentIteration, simpleIterationProgress);
-
-    // https://w3c.github.io/web-animations/#calculating-the-transformed-progress
-    // https://w3c.github.io/web-animations/#calculating-the-iteration-progress
-    return timing._easingFunction(directedProgress);
+    if (activeDuration === 0)
+      return phase === PhaseBefore ? 0 : 1;
+    var startOffset = timing.iterationStart * timing.duration;
+    var scaledActiveTime = calculateScaledActiveTime(activeDuration, activeTime, startOffset, timing);
+    var iterationTime = calculateIterationTime(timing.duration, repeatedDuration(timing), scaledActiveTime, startOffset, timing);
+    var currentIteration = calculateCurrentIteration(timing.duration, iterationTime, scaledActiveTime, timing);
+    return calculateTransformedTime(currentIteration, timing.duration, iterationTime, timing) / timing.duration;
   }
 
-  shared.cloneTimingInput = cloneTimingInput;
   shared.makeTiming = makeTiming;
-  shared.numericTimingToObject = numericTimingToObject;
   shared.normalizeTimingInput = normalizeTimingInput;
   shared.calculateActiveDuration = calculateActiveDuration;
-  shared.calculateIterationProgress = calculateIterationProgress;
+  shared.calculateTimeFraction = calculateTimeFraction;
   shared.calculatePhase = calculatePhase;
-  shared.normalizeEasing = normalizeEasing;
-  shared.parseEasingFunction = parseEasingFunction;
+  shared.toTimingFunction = toTimingFunction;
 
   if (WEB_ANIMATIONS_TESTING) {
     testing.normalizeTimingInput = normalizeTimingInput;
-    testing.normalizeEasing = normalizeEasing;
-    testing.parseEasingFunction = parseEasingFunction;
+    testing.toTimingFunction = toTimingFunction;
     testing.calculateActiveDuration = calculateActiveDuration;
     testing.calculatePhase = calculatePhase;
     testing.PhaseNone = PhaseNone;
     testing.PhaseBefore = PhaseBefore;
     testing.PhaseActive = PhaseActive;
     testing.PhaseAfter = PhaseAfter;
+    testing.calculateActiveTime = calculateActiveTime;
+    testing.calculateScaledActiveTime = calculateScaledActiveTime;
+    testing.calculateIterationTime = calculateIterationTime;
+    testing.calculateCurrentIteration = calculateCurrentIteration;
+    testing.calculateTransformedTime = calculateTransformedTime;
   }
 
 })(webAnimationsShared, webAnimationsTesting);

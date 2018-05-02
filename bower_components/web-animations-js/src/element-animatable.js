@@ -13,11 +13,7 @@
 // limitations under the License.
 
 (function(scope) {
-  window.Element.prototype.animate = function(effectInput, options) {
-    var id = '';
-    if (options && options.id) {
-      id = options.id;
-    }
-    return scope.timeline._play(scope.KeyframeEffect(this, effectInput, options, id));
+  window.Element.prototype.animate = function(effectInput, timingInput) {
+    return scope.timeline._play(scope.Animation(this, effectInput, timingInput));
   };
 })(webAnimations1);
