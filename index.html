@@ -13,8 +13,11 @@
 	
 <script>
 var importDoc = document.currentScript.ownerDocument;
-var style = importDoc.querySelector('link[rel=import]');
-document.head.appendChild(style);
+var x = importDoc.querySelectorAll('link[rel=import]');
+var i;
+for (i = 0; i < x.length; i++) {
+	document.head.appendChild(x[i]);
+}
 </script>
 	 <link rel="import" href="bower_components/font-roboto/roboto.html"/>
     <link rel="import" href="bower_components/paper-elements/paper-elements.html"/>
