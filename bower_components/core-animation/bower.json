@@ -2,8 +2,7 @@
   "name": "core-animation",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5",
-    "web-animations-js": "web-animations/web-animations-js#1.0.6"
-  },
-  "version": "0.5.6"
+    "polymer": "Polymer/polymer#^0.4.0",
+    "web-animations-js": "web-animations/web-animations-js#master"
+  }
 }

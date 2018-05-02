@@ -12,8 +12,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Core A11y Keys demo</title>
-  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <script src="../platform/platform.js"></script>
   <link rel="import" href="core-a11y-keys.html">
+</head>
+<body>
+  <template is="auto-binding">
   <style>
     div {
       height: 100px;
@@ -21,16 +24,12 @@
       background: gray;
     }
   </style>
-</head>
-<body>
-  <template is="auto-binding">
-    <span>Press any of these keys: {{keys}}</span>
-    <core-a11y-keys id="a11y" keys="{{keys}}" on-keys-pressed="{{print}}"></core-a11y-keys>
+    <core-a11y-keys id="a11y" keys="* pageup pagedown left right down up shift+a alt+a home end" target="{{$.target}}" on-keys-pressed="{{print}}"></core-a11y-keys>
+    <div id="target" tabindex="0">focus this</div>
     <pre id="output"></pre>
   </template>
   <script>
     addEventListener('template-bound', function(ev) {
-      ev.target.keys = "* pageup pagedown left right down up shift+a alt+a home end space enter"
       ev.target.print = function(ev) {
         console.log(ev.detail);
         this.$.output.textContent += ev.detail.key + ' pressed!\n';

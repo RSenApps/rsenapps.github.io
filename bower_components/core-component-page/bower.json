@@ -2,8 +2,7 @@
   "name": "core-component-page",
   "private": true,
   "dependencies": {
-    "webcomponentsjs": "Polymer/webcomponentsjs",
-    "polymer": "Polymer/polymer#^0.5"
-  },
-  "version": "0.5.6"
+    "platform": "Polymer/platform#^0.4.0",
+    "polymer": "Polymer/polymer#^0.4.0"
+  }
 }

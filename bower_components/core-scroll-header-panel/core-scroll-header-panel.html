@@ -37,21 +37,20 @@ or, if you would prefer to do it in CSS, just give `html`, `body`, and `core-scr
     }
 
 `core-scroll-header-panel` works well with `core-toolbar` but can use any element 
-that represents a header by adding a `core-header` class to it.
+that represents a header by adding a `core-header` class to it.  Use the attribute 
+or class `content` to delineate the content section.
 
     <core-scroll-header-panel>
       <core-toolbar>Header</core-toolbar>
-      <div>Content goes here...</div>
+      <div content>Content goes here...</div>
     </core-scroll-header-panel>
 
 @group Polymer Core Elements
 @element core-scroll-header-panel
-@mixins Polymer.CoreResizable https://github.com/polymer/core-resizable
 @homepage github.io
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../core-resizable/core-resizable.html">
 
 <polymer-element name="core-scroll-header-panel">
 <template>
@@ -60,7 +59,7 @@ that represents a header by adding a `core-header` class to it.
 
   <div id="mainContainer">
   
-    <content id="mainContent" select=":not(core-toolbar):not(.core-header)"></content>
+    <content id="mainContent" select="[content], .content"></content>
     
   </div>
   
@@ -79,7 +78,7 @@ that represents a header by adding a `core-header` class to it.
 <script>
 (function() {
 
-  Polymer(Polymer.mixin({
+  Polymer('core-scroll-header-panel', {
     
     /**
      * Fired when the content has been scrolled.
@@ -186,15 +185,7 @@ that represents a header by adding a `core-header` class to it.
     observe: {
       'headerMargin fixed': 'setup'
     },
-
-    eventDelegates: {
-      'core-resize': 'measureHeaderHeight'
-    },
-
-    attached: function() {
-      this.resizableAttachedHandler();
-    },
-
+    
     ready: function() {
       this._scrollHandler = this.scroll.bind(this);
       this.scroller.addEventListener('scroll', this._scrollHandler);
@@ -202,7 +193,6 @@ that represents a header by adding a `core-header` class to it.
     
     detached: function() {
       this.scroller.removeEventListener('scroll', this._scrollHandler);
-      this.resizableDetachedHandler();
     },
     
     domReady: function() {
@@ -341,7 +331,7 @@ that represents a header by adding a `core-header` class to it.
       }
     }
 
-  }, Polymer.CoreResizable));
+  });
   
   //determine proper transform mechanizm
   if (document.documentElement.style.transform !== undefined) {

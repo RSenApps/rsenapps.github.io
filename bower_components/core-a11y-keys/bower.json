@@ -2,10 +2,7 @@
   "name": "core-a11y-keys",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5"
-  },
-  "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^1"
+    "polymer": "Polymer/polymer#^0.4.0"
   },
   "ignore": [
     "**/.*",
@@ -13,6 +10,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "version": "0.5.6"
+  ]
 }

@@ -8,7 +8,6 @@
     subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link href="../core-selector/core-selector.html" rel="import">
-<link href="../core-resizable/core-resizable.html" rel="import">
 
 <link href="transitions/hero-transition.html" rel="import">
 <link href="transitions/cross-fade.html" rel="import">
@@ -219,7 +218,6 @@ Example:
 
 @element core-animated-pages
 @extends core-selector
-@mixins Polymer.CoreResizer https://github.com/polymer/core-resizable
 @status beta
 @homepage github.io
 -->
@@ -247,7 +245,7 @@ Fired when a page transition completes.
 
 <script>
 
-  Polymer(Polymer.mixin({
+  Polymer({
 
     eventDelegates: {
       'core-transitionend': 'transitionEnd'
@@ -285,14 +283,6 @@ Fired when a page transition completes.
       this.transitioning = [];
     },
 
-    attached: function() {
-      this.resizerAttachedHandler();
-    },
-
-    detached: function() {
-      this.resizerDetachedHandler();
-    },
-
     transitionsChanged: function() {
       this._transitions = this.transitions.split(' ');
     },
@@ -328,7 +318,7 @@ Fired when a page transition completes.
         this.animating = null;
       }
 
-      Polymer.flush();
+      Platform.flush();
 
       if (this.transitioning.indexOf(src) === -1) {
         this.transitioning.push(src);
@@ -344,7 +334,7 @@ Fired when a page transition completes.
         src: src,
         dst: dst,
         easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-      };
+      }
 
       // fire an event so clients have a chance to do something when the
       // new page becomes visible but before it draws.
@@ -420,39 +410,26 @@ Fired when a page transition completes.
 
       if (!oldItem) {
         this.applySelection(this.selectedItem, true);
-        this.async(this.notifyResize);
         return;
       }
 
       if (this.hasAttribute('no-transition') || !this._transitionElements || !this._transitionElements.length) {
         this.applySelection(oldItem, false);
         this.applySelection(this.selectedItem, true);
-        this.notifyResize();
         return;
       }
 
       if (oldItem && this.selectedItem) {
         // TODO(sorvell): allow bindings to update first?
         var self = this;
-        Polymer.flush();
-        Polymer.endOfMicrotask(function() {
+        Platform.flush();
+        Platform.endOfMicrotask(function() {
           self.applyTransition(oldItem, self.selectedItem);
-          self.notifyResize();
         });
-      }
-    },
-
-    resizerShouldNotify: function(el) {
-      // Only notify descendents of selected item
-      while (el && (el != this)) {
-        if (el == this.selectedItem) {
-          return true;
-        }
-        el = el.parentElement || (el.parentNode && el.parentNode.host);
       }
     }
 
-  }, Polymer.CoreResizer));
+  });
 
 </script>
 
