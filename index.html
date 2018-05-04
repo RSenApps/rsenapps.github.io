@@ -6,39 +6,14 @@
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<title>Ryan Senanayake</title>
 	<link rel="shortcut icon" href="favicon.ico">
-	<!-- 1. Load platform.js for polyfill support. -->
-    <script type="text/javascript" src="bower_components/platform/platform.js"></script>
-
-    <!-- 2. Use an HTML Import to bring in the element. -->
-	 <link rel="import" href="bower_components/font-roboto/roboto.html"/>
-    <link rel="import" href="bower_components/paper-elements/paper-elements.html"/>
-	<link rel="import" href="bower_components/core-icons/core-icons.html"/>
-		<link rel="import" href="bower_components/core-style/core-style.html"/>
-
-	<link rel="import" href="bower_components/core-icons/hardware-icons.html"/>
-	<link rel="import" href="bower_components/core-icons/social-icons.html"/>
-		<link rel="import" href="bower_components/core-icons/communication-icons.html"/>
-
-	<link rel="import" href="bower_components/paper-tabs/paper-tabs.html"/>
-		<link rel="import" href="bower_components/paper-ripple/paper-ripple.html"/>
 
 <link rel="stylesheet" type="text/css" href="style.css" />
 
-<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html"/>
-<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html"/>
-<link rel="import" href="bower_components/core-toolbar/core-toolbar.html"/>
-<link rel="import" href="bower_components/core-animation/core-animation.html"/>
-
-
-<link href="bower_components/core-animated-pages/transitions/slide-from-right.html" rel="import"/>
 
 </head>
 <body>
-	<core-scroll-header-panel keepCondensedHeader noReveal condensedHeaderHeight="50%">
 		<div class="core-header">
 			<div id="header" class="topContainer">
-			<paper-ripple id="ripple" fit></paper-ripple>
-			
 				 <div class="nameContainer">
 					<img alt="Ryan Senanayake" id="me" src="images/me.png" class="me" />
 					<h1>Ryan Senanayake</h1>
@@ -67,26 +42,7 @@
 				
 			</div>
 		
-			<paper-tabs id="paperTabs" selected="0">
-				  <paper-tab id="projectTab" class="projectTab">Projects</paper-tab>
-				  <paper-tab id="hackathonTab" class="hackathonTab">Hackathons</paper-tab>
-				  <paper-tab id="workTab" class="workTab">In Progress</paper-tab>
-			</paper-tabs>
 		</div>
-		<div content>
-			 <core-animated-pages id="pages" selected="{{paperTabs.selected}}" transitions="slide-from-right">
-					<x-page-1></x-page-1>
-					<x-page-2></x-page-2>
-					<x-page-3></x-page-3>
-
-			</core-animated-pages>
-		</div>
-	</core-scroll-header-panel>
-	
-	<polymer-element name="x-page-1" noscript>
-			<template>
-			<link rel="stylesheet" type="text/css" href="style.css" />
-
 				<div class="projectsTabPage">
 					<div class="leftColumn">
 								<div class="cardsection">
@@ -220,20 +176,8 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 								</div>
 							</div>
 						</div>
-						<div style="float:right; margin:20px">
-								<h2 style="display:inline-block; margin:10px">Next Page</h2>
-								<paper-fab class="nextPage" onclick="nextPage()" style="display:inline-block" icon="arrow-forward"></paper-fab>
-							</div>
-					</div>
 				</div>
-				
-			</template>
-		</polymer-element>
-		<polymer-element name="x-page-2" noscript>
-			<template>
-					<link rel="stylesheet" type="text/css" href="style.css" />
-					<div class="hackathonsTabPage">
-					<div style="display:block; overflow:hidden;">
+			<div class="hackathonsTabPage">
 						<div class="leftColumn">
 										<div class="cardsection">
 											<div class="hackathonCardHeader">
@@ -305,9 +249,9 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 										</div>
 											<p>Using the cutting-edge Meta Augmented Reality goggles, our hack allowed the user to control their Android phone from anywhere as a hologram. You can use your finger or hand gestures (with the Thalmic Myo) to interact with the hologram. To provide this deep integration required using hidden linux shell commands. We also used the Meta's depth camera to allow for users to reach upwards and grab one of the 5 last used apps. After grabbing the app, the user can push the app onto the screen to launch it.</p>
 											<div class="buttonbar">
-						<a target="_top" href="http://challengepost.com/software/metacast-hao2k"><paper-button class="projectButton" raised>
+						<a target="_top" href="http://challengepost.com/software/metacast-hao2k">
 	  Submission
-	</paper-button></a></div>
+	</a></div>
 										</div>
 										<div class="cardsection">
 											<div class="hackathonCardHeader">
@@ -319,9 +263,9 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 										</div>
 											<p>Meta Augmented Reality is a cutting edge technology that we were really excited to hack on because practically anything we created would be new! We envisioned a holographic workspace that can be established anywhere with a desk and other surrounding floating panels and applications. We were particularly interested in how augmented reality could combine the intuitiveness of note-taking on physical paper with the benefits of technology, such as storage convenience, improved collaboration, and waste reduction. We imagined someone would be able to interact with the InSite workspace by grabbing and dragging applications to different planes or tossing them over their shoulder to close them. We even implemented a functionality that allows a real eraser to be used to erase in the holographic note-taking/drawing panel. InSite is also connected through the cloud to an Android app that gives the user or a collaborator access to view and edit all the pages created within the holographic workspace and updated in real time on both ends. One of the major challenges we faced in this project was the inaccuracy of the Meta prototype's tracking, a factor that fortunately promises to be greatly improved with future models.</p>
 											<div class="buttonbar">
-						<a target="_top" href="http://hackthenorth.challengepost.com/submissions/26948-ytime-traffic-aware-alarm-clock"><paper-button class="projectButton" raised>
+						<a target="_top" href="http://hackthenorth.challengepost.com/submissions/26948-ytime-traffic-aware-alarm-clock">
 	  Submission
-	</paper-button></a></div>
+	</a></div>
 										</div>
 						<div class="cardsection">
 											<div class="hackathonCardHeader">
@@ -333,9 +277,9 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 										</div>
 											<p>Accepted to compete in Hack the North, a college-level hackathon with over 3000 applicants. We built YTime Traffic-Aware Alarm Clock. The premise of the app is that often people are setting their alarm clock to go somewhere, yet we still set it to a specific time. The app will use traffic data to periodically update its wakeup time to adjust for traffic conditions. </p>
 											<div class="buttonbar">
-						<a target="_top" href="http://hackthenorth.challengepost.com/submissions/26948-ytime-traffic-aware-alarm-clock"><paper-button class="projectButton" raised>
+						<a target="_top" href="http://hackthenorth.challengepost.com/submissions/26948-ytime-traffic-aware-alarm-clock"/>
 	  Submission
-	</paper-button></a></div>
+	</a></div>
 										</div>
 										<div class="cardsection">
 											<div class="hackathonCardHeader">
@@ -352,20 +296,6 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 								
 					</div>
 				</div>
-				<div style="float:left; margin:50px">
-									<h2 style="display:inline-block; margin:10px">Previous Page</h2>
-									<paper-fab onclick="previousPage()" style="display:inline-block" icon="arrow-back"></paper-fab>
-					</div>
-					<div style="float:right; margin:50px">
-									<h2 style="display:inline-block; margin:10px">Next Page</h2>
-									<paper-fab class="nextPage" onclick="nextPage()" style="display:inline-block" icon="arrow-forward"></paper-fab>
-								</div>	
-				</div>
-			</template>
-		</polymer-element>
-			<polymer-element name="x-page-3" noscript>
-			<template>
-					<link rel="stylesheet" type="text/css" href="style.css" />
 
 				<div class="workTabPage">
 					<div class="cardsection">
@@ -375,13 +305,9 @@ With Open Mic+ for Google Now, access all the commands from anywhere on your pho
 										<p>Official release coming soon!</p>
 																			</div>
 <div style="float:left; margin:20px">
-								<h2 style="display:inline-block; margin-top:50px; margin:10px">Previous Page</h2>
-								<paper-fab onclick="previousPage()" style="display:inline-block" icon="arrow-back"></paper-fab>
 							</div>
 									</div>
 				</div>
-			</template>
-		</polymer-element>
 		<script>
 		 (function(f) {
         window.setTimeout = f(window.setTimeout);   // overwrites the global function!
