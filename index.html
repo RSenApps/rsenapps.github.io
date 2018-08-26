@@ -85,26 +85,23 @@
     <div id="skills">
         <h2 class="heading">Skills</h2>
         <ul>
+            <li>CUDA</li>
             <li>C++</li>
             <li>C</li>
+            <li>Go</li>
             <li>Python</li>
             <li>Java</li>
-            <li>Go</li>
-            <li>CUDA</li>
             <li>x86 Assembly</li>
             <li>node.js</li>
             <li>Matlab</li>
-            <li>PHP</li>
             <li>Javascript</li>
             <li>SQL</li>
             <li>bash</li>
-            <li>C#</li>
-            <li>Objective-C</li>
-            <li>Android</li>
-            <li>iOS</li>
-            <li>Windows</li>
-            <li>Unity</li>
             <li>Tensorflow</li>
+            <li>CNTK</li>
+            <li>Keras</li>
+            <li>Android</li>
+            <li>Unity</li>
         </ul>
     </div>
     <!-- End #skills -->
@@ -112,16 +109,24 @@
     <div id="experience" class="background-alt">
         <h2 class="heading">Experience</h2>
         <div id="experience-timeline">
-            <div data-date="May 2018 – Present">
-                <h3>NVIDIA</h3>
-                <h4>AI Developer Technology Intern</h4>
-            </div>
-            
             <div data-date="December 2017 – Present">
-                <h3>MIT Compiler Research Group (COMMIT)</h3>
+                <h3>MIT Compiler Research Group (Prof. Saman Amarasinghe)</h3>
                 <h4>Research Assistant</h4>
                 <p>
                     • Added support for complex numbers and dynamically typed tensors for the Tensor Algebra Compiler project
+                    • Designed a high-performance general algorithm for reordering dimensions of a tensor with any sparsity pattern
+                </p>
+            </div>
+            <div data-date="May 2018 – August 2018">
+                <h3>NVIDIA Corporation</h3>
+                <h4>AI Developer Technology Intern</h4>
+                <p>
+                    • Investigated persistent kernels for RNNs by building and comparing 6 different approaches
+                    • Worked with client to show 100x throughput improvement by using GPUs instead of CPUs for real-time ASR task
+                    • Created complex optimizations at the thread, warp, block, and stream level
+                    • Utilized advanced features of CUDA, such as cooperative groups, tensor cores, and warp-level primitives
+                    • Achieved 3x the throughput of cuDNN implementation for batch size 1 inference
+                    • Gave two hour-long presentations to a total of 50+ engineers and presented at a company-wide poster session
                 </p>
             </div>
 
@@ -146,11 +151,34 @@
                 </p>
             </div>
 
-            <div data-date="January 2012 - Present">
+            <div data-date="January 2016">
+                <h3>Meta Company</h3>
+                <h4>Prototype Engineer Intern</h4>
+                <p>
+                    • Prototyped interactions in augmented reality reporting to the VP of UX in Unity and C#
+                </p>
+                <p>
+                    • Implemented computer vision algorithms in C#
+                </p>
+            </div>
+
+            <div data-date="June 2015 - January 2016">
+                <h3>Prose LLC</h3>
+                <h4>Android Developer</h4>
+                <p>
+                    • Built Android app based on existing iOS app, including infinite scrolling, socket-based
+messaging, push notifications, and offline caching
+                </p>
+            </div>
+            
+            <div data-date="January 2012 - August 2015">
                 <h3>RSenApps Inc</h3>
                 <h4>CEO, Founder</h4>
                 <p>
-                    • Developed 12 published Android apps, which generated $60k+ in revenue
+                    • Developed 12 published Android apps, between ages 14-17
+                </p>
+                <p>
+                   • Generated $60k+ in revenue from app sales, advertising, and in-app purchases
                 </p>
                 <p>
                     • Open Mic+ has 4 million downloads and was featured on XDA and LifeHacker
@@ -162,32 +190,6 @@
                     • Commandr was selected for Android Authority’s 10 Best Android Apps of 2014
                 </p>
             </div>
-
-            <div data-date="January 2016">
-                <h3>Meta Company</h3>
-                <h4>Prototype Engineer Intern</h4>
-                <p>
-                    • Prototyped interactions in augmented reality reporting to the VP of UX in Unity and C#
-                </p>
-                <p>
-                    • Implemented computer vision algorithms in C#
-                </p>
-                <p>
-                    • Offered full-time employment through spring semester and summer of 2016
-                </p>
-            </div>
-
-            <div data-date="June 2015 - January 2016">
-                <h3>Prose LLC</h3>
-                <h4>Android Developer</h4>
-                <p>
-                    • Wrote all of the code to port the iOS app to Android
-                </p>
-                <p>
-                    • Features included infinite scrolling, socket-based messaging, push notifications, and offline caching
-                </p>
-            </div>
-
         </div>
     </div>
     <!-- End #experience -->
@@ -198,13 +200,18 @@
             <h3>Massachusetts Institute of Technology</h3>
             <span class="education-date">Sept 2018 - Feb 2020</span>
             <h4>Candidate for Masters of Engineering with Concentration in Computer Systems</h4>
+            <p>
+                Relevant Coursework: Distributed Systems, Computer Systems Security, Multicore Programming, and Operating Systems
+            </p>
         </div>
         <div class="education-block">
             <h3>Massachusetts Institute of Technology (4.9 GPA)</h3>
             <span class="education-date">Sept 2015 - May 2019</span>
             <h4>Candidate for Bachelor of Science in Computer Science and Engineering</h4>
             <p>
-                Relevant Coursework: Distributed Systems, Computer Systems Security, Multicore Programming, Operating Systems, Computer System Engineering, Computer Vision, Design and Analysis of Algorithms, Computation Structures, and Artificial Intelligence
+                Relevant Coursework: Performance Engineering of Software Systems, Computer System Engineering, Computer
+Vision, Computation Structures, Design and Analysis of Algorithms, Introduction to Neuroscience,
+Artificial Intelligence, Linear Algebra, Mathematics for Computer Science, and Introduction to Probability
             </p>
         </div>
 
@@ -224,7 +231,7 @@
                     <div class="project-info">
                         <h3>N Chainz: A High Performance Decentralized Cryptocurrency Exchange</h3>
                         <p>
-                            Centralized exchanges rely on trusting that their owners will take the proper security precautions. N Chainz is a decentralized cryptocurrency exchange. Specifically, N Chainz’s features include block generation, limit orders, and the ability to trade a base token with another token. We use a novel multi-chain consensus structure to increase performance and scalability. Built with Nicholas Egan and Lizzie Wei.
+                            <b>Winner of Binance Decentralized Exchange Competition $60k prize</b><br>Centralized exchanges rely on trusting that their owners will take the proper security precautions. N Chainz is a decentralized cryptocurrency exchange. Specifically, N Chainz’s features include block generation, limit orders, and the ability to trade a base token with another token. We use a novel multi-chain consensus structure to increase performance and scalability. Built with Nicholas Egan and Lizzie Wei.
                         </p>
                         <a href="http://www.nchainz.com">View Project</a>
                         <br>
