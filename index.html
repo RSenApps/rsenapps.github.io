@@ -43,10 +43,10 @@
     <div id="lead">
         <div id="lead-content">
             <h1>Ryan Senanayake</h1>
-            <h2>MIT Computer Systems Researcher</h2>
-            <a href="https://play.google.com/store/apps/developer?id=RSenApps+Inc." class="btn-rounded-white">Android</a>
+            <h2>Computer Systems Researcher</h2>
             <a href="http://www.github.com/RSenApps" class="btn-rounded-white">Github</a>
             <a href="resume.pdf" download="resume.pdf" class="btn-rounded-white">Resume</a>
+            <a href="https://scholar.google.com/citations?user=yZsgq6MAAAAJ" class="btn-rounded-white">Google Scholar</a>
             <a href="http://www.linkedin.com/in/ryansenanayake/" class="btn-rounded-white">LinkedIn</a>
             <a href="mailto:ryanmsen+website@gmail.com" class="btn-rounded-white">Email</a>
         </div>
@@ -71,11 +71,7 @@
                 </div>
                 <div class="col-md-8">
                     <p>
-                        Master's student at MIT with a concentration in Computer Systems (concurrently finishing undergrad in Computer Science so as to receive both degrees in 4.5 years). Currently doing research in MIT's compiler group under Professor Saman Amarasinghe. Interested in high-performance computing, compilers, novel computation architectures, and distributed systems. Have significant programming experience and multiple successful published apps with several million downloads.
-                        <br>
-                        <br> I started programming in 3rd grade with simple games built in C#. I slowly built up my programming skills by reading books and using online resources. Right before entering high school, I switched to an Android phone and quickly learned how easy and useful it was to build Android apps. Throughout high school, I built successively more complex apps and quickly learned how writing software allowed me to impact the lives of millions of users. I consider my ability to learn new concepts and technologies quickly to be my greatest strength.
-                        <br>
-                        <br> I started MIT with a deep fascination for Artificial Intelligence with a special interest in what AI can learn from neuroscience. However, I became frustrated with the lack of theory (especially in Applied ML) and found my systems classes to be much more fulfilling. I love solving problems in highly-constrained environments such as on novel computation architectures, within a distributed system, or when high-performance is essential. I live for those moments of flow when you are working on a difficult problem with the right team.
+                        Currently working at Reservoir Labs as an Automatic Parallelization and Compiler Research Engineer. Interested in high-performance computing, programming languages, compilers, formal verification, novel computation architectures, and distributed systems. I treasure those moments of flow when you are working on a difficult problem with the right team.
                     </p>
                 </div>
             </div>
@@ -88,20 +84,13 @@
             <li>CUDA</li>
             <li>C++</li>
             <li>C</li>
-            <li>Go</li>
             <li>Python</li>
             <li>Java</li>
+            <li>Go</li>
+            <li>Coq</li>
             <li>x86 Assembly</li>
-            <li>node.js</li>
-            <li>Matlab</li>
-            <li>Javascript</li>
-            <li>SQL</li>
-            <li>bash</li>
             <li>Tensorflow</li>
-            <li>CNTK</li>
-            <li>Keras</li>
             <li>Android</li>
-            <li>Unity</li>
         </ul>
     </div>
     <!-- End #skills -->
@@ -109,12 +98,29 @@
     <div id="experience" class="background-alt">
         <h2 class="heading">Experience</h2>
         <div id="experience-timeline">
-            <div data-date="December 2017 – Present">
+            <div data-date="April 2020 - Present">
+                <h3>Reservoir Labs</h3>
+                <h4>Automatic Parallelization and Compiler Research Engineer</h4>
+            </div>
+            <div data-date="December 2017 – February 2020">
                 <h3>MIT Compiler Research Group (Prof. Saman Amarasinghe)</h3>
                 <h4>Research Assistant</h4>
                 <p>
-                    • Added support for complex numbers and dynamically typed tensors for the Tensor Algebra Compiler project<br>
-                    • Designed a high-performance general algorithm for reordering dimensions of a tensor with any sparsity pattern
+                    • Introduced position iteration spaces to complement the standard coordinate iteration spaces<br>
+                    • Generalized standard loop transformations to sparse loops<br>
+                    • Constructed a CUDA GPU backend that allows generating high-performance CUDA kernels for all sparse tensor algebra expressions and formats supported by the <a href="http://tensor-compiler.org/">Sparse Tensor Algebra Compiler (TACO)</a><br>
+                    • Built an <a href="https://github.com/tensor-compiler/taco/pull/284">open-source implementation</a> (7k+ lines of code) that was merged into TACO<br>
+                    • Gave two hour-long presentations to NVIDIA Research and a poster session at "Workshop on Compiler Techniques for Sparse Tensor Algebra"<br>
+                    • Submitted a <a href="http://www.rsenapps.com/senanayake-thesis.pdf">thesis</a> and a <a href="https://arxiv.org/abs/2001.00532">paper</a> under review for publication
+                </p>
+            </div>
+            <div data-date="June 2019 – August 2019">
+                <h3>Citadel Securities</h3>
+                <h4>Software Engineering Intern (Options Market Making Team)</h4>
+                <p>
+                    • Developed a tool to fingerprint for a user-specified WebSocket protocol given an incomplete TCP packet capture<br>
+                    • Designed and built a framework used in production to allow traders to easily develop scripts to hedge positions<br>
+                    • Improved the performance of high-performance distributed component and extended it with additional features
                 </p>
             </div>
             <div data-date="May 2018 – August 2018">
@@ -137,7 +143,6 @@
                     • Built several projects in C and Assembly to run on a massively-parallel approximate-arithmetic SIMD mesh
                 </p>
                 <p>
-
                     • Developed a framework to run neural networks and perform real-time ImageNet classification in .04W/fps
                 </p>
                 <p>
@@ -198,20 +203,23 @@ messaging, push notifications, and offline caching
         <h2 class="heading">Education</h2>
         <div class="education-block">
             <h3>Massachusetts Institute of Technology (5.0 GPA)</h3>
-            <span class="education-date">Sept 2018 - Dec 2019</span>
-            <h4>Candidate for Masters of Engineering with concentration in Computer Systems</h4>
+            <span class="education-date">Sept 2018 - Feb 2020</span>
+            <h4>Masters of Engineering with concentration in Computer Systems</h4>
             <p>
-                Relevant Coursework: Distributed Systems, Computer Systems Security, Multicore Programming, and Operating Systems
+                Relevant Coursework: Distributed Systems, Computer Systems Security, Multicore Programming, Operating Systems, and Principles of Computer Systems<br>
+                Thesis: <a href="http://www.rsenapps.com/senanayake-thesis.pdf">senanayake-thesis.pdf</a><br>
+                Paper under review for publication: <a href="https://arxiv.org/abs/2001.00532">Preprint</a>
             </p>
         </div>
         <div class="education-block">
-            <h3>Massachusetts Institute of Technology (4.9 GPA)</h3>
+            <h3>Massachusetts Institute of Technology (5.0 GPA)</h3>
             <span class="education-date">Sept 2015 - May 2019</span>
-            <h4>Candidate for Bachelor of Science in Computer Science and Engineering</h4>
+            <h4>Bachelor of Science in Computer Science and Engineering</h4>
             <p>
                 Relevant Coursework: Performance Engineering of Software Systems, Computer System Engineering, Computer
 Vision, Computation Structures, Design and Analysis of Algorithms, Introduction to Neuroscience,
-Artificial Intelligence, Linear Algebra, Mathematics for Computer Science, and Introduction to Probability
+Artificial Intelligence, Linear Algebra, Mathematics for Computer Science, and Introduction to Probability<br>
+                Activities: <a href="http://vratmit.com/">VR@MIT</a> (VP of Community and Lead Organizer of MIT IAP class), intramural ice hockey, intramural badminton, intramural soccer, and intramural table tennis 
             </p>
         </div>
 
@@ -381,7 +389,7 @@ Artificial Intelligence, Linear Algebra, Mathematics for Computer Science, and I
             <div class="row">
                 <div class="col-sm-5 copyright">
                     <p>
-                        Copyright &copy; 2018 Ryan Senanayake
+                        Copyright &copy; 2020 Ryan Senanayake
                     </p>
                 </div>
                 <div class="col-sm-2 top">
