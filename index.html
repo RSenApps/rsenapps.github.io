@@ -71,7 +71,7 @@
                 </div>
                 <div class="col-md-8">
                     <p>
-                        Currently working at Reservoir Labs as an Automatic Parallelization and Compiler Research Engineer. Interested in high-performance computing, programming languages, compilers, formal verification, novel computation architectures, and distributed systems. I treasure those moments of flow when you are working on a difficult problem with the right team.
+                        Currently working at Reservoir Labs as a Senior Compiler Engineer. Interested in high-performance computing, programming languages, compilers, formal verification, novel computation architectures, and distributed systems. I treasure those moments of flow when you are working on a difficult problem with the right team.
                     </p>
                 </div>
             </div>
@@ -81,16 +81,19 @@
     <div id="skills">
         <h2 class="heading">Skills</h2>
         <ul>
-            <li>CUDA</li>
             <li>C++</li>
             <li>C</li>
-            <li>Python</li>
+            <li>CUDA</li>
             <li>Java</li>
-            <li>Go</li>
-            <li>Coq</li>
-            <li>x86 Assembly</li>
-            <li>Tensorflow</li>
-            <li>Android</li>
+            <li>Python</li>
+            <li>OpenMP</li>
+            <li>Legion</li>
+            <li>Glow</li>
+            <li>TVM</li>
+            <li>Halide</li>
+            <li>TACO</li>
+            <li>AWS</li>
+            <li>bash</li>
         </ul>
     </div>
     <!-- End #skills -->
@@ -100,7 +103,16 @@
         <div id="experience-timeline">
             <div data-date="April 2020 - Present">
                 <h3>Reservoir Labs</h3>
-                <h4>Automatic Parallelization and Compiler Research Engineer</h4>
+                <h4>Senior Engineer, Compilers</h4>
+                <p>
+                    • Wrote and designed central “automatic tensorization” section of an accepted DOE SBIR Phase IIB proposal for $1.1M
+                    • Optimized and onboarded the BERT neural network until it was power-limited on a wide-vector VLIW accelerator
+                    • Developed the OpenMP GPU Offload Backend for the R-Stream polyhedral compiler (submitting to WACCPD@SC21)
+                    • Created an end-to-end system design proposal for DNN inference on a new accelerator, which the client selected
+                    • Accepted into the highly-competitive two-week Argonne National Labs Training Program for Extreme-Scale Computing
+                    • Built a new polyhedral pass to automatically parallelize reductions with atomic operations or thread-local arrays
+                    • Mentored 2 summer interns on the Legion task-based runtime and the TVM compiler
+                </p>
             </div>
             <div data-date="December 2017 – February 2020">
                 <h3>MIT Compiler Research Group (Prof. Saman Amarasinghe)</h3>
@@ -111,7 +123,7 @@
                     • Constructed a CUDA GPU backend that allows generating high-performance CUDA kernels for all sparse tensor algebra expressions and formats supported by the <a href="http://tensor-compiler.org/">Sparse Tensor Algebra Compiler (TACO)</a><br>
                     • Built an <a href="https://github.com/tensor-compiler/taco/pull/284">open-source implementation</a> (7k+ lines of code) that was merged into TACO<br>
                     • Gave two hour-long presentations to NVIDIA Research and a poster session at "Workshop on Compiler Techniques for Sparse Tensor Algebra"<br>
-                    • Submitted a <a href="http://www.rsenapps.com/senanayake-thesis.pdf">thesis</a> and a <a href="https://arxiv.org/abs/2001.00532">paper</a> under review for publication
+                    • Submitted a <a href="http://dspace.mit.edu/handle/1721.1/7582">thesis</a> and an <a href="https://doi.org/10.1145/3428226">OOPSLA 2020 publication</a>
                 </p>
             </div>
             <div data-date="June 2019 – August 2019">
@@ -207,8 +219,8 @@ messaging, push notifications, and offline caching
             <h4>Masters of Engineering with concentration in Computer Systems</h4>
             <p>
                 Relevant Coursework: Distributed Systems, Computer Systems Security, Multicore Programming, Operating Systems, and Principles of Computer Systems<br>
-                Thesis: <a href="http://www.rsenapps.com/senanayake-thesis.pdf">senanayake-thesis.pdf</a><br>
-                Paper under review for publication: <a href="https://arxiv.org/abs/2001.00532">Preprint</a>
+                Thesis: <a href="http://dspace.mit.edu/handle/1721.1/7582">senanayake-thesis.pdf</a> (won 1st Place MIT Charles and Jennifer Johnson Thesis Award)<br>
+                <a href="https://doi.org/10.1145/3428226">35th ACM Intl. Conf. on Object-Oriented Programming Systems, Lanugages, and Applications (OOPSLA) 2020 publication</a>
             </p>
         </div>
         <div class="education-block">
@@ -389,7 +401,7 @@ Artificial Intelligence, Linear Algebra, Mathematics for Computer Science, and I
             <div class="row">
                 <div class="col-sm-5 copyright">
                     <p>
-                        Copyright &copy; 2020 Ryan Senanayake
+                        Copyright &copy; 2021 Ryan Senanayake
                     </p>
                 </div>
                 <div class="col-sm-2 top">
